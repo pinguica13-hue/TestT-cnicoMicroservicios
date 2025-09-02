@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: msproductos
+  datasource:
+    url: jdbc:h2:mem:productosdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# Swagger / OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: com.example.msproductos.controller
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+# API Key para comunicación entre microservicios
+security:
+  api:
+    key: producto-service-key-123

@@ -1,0 +1,14 @@
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\client\ProductoClient.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\config\RestTemplateConfig.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\controller\CompraController.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\controller\InventarioController.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\descuento\CompraRequest.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\descuento\CompraResponse.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\entity\Compra.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\entity\Inventario.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\MSInventarioApplication.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\repository\CompraRepository.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\repository\InventarioRepository.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\service\CompraService.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\service\InventarioService.java
+C:\Users\jonna\Downloads\Prueba tecnica\Test-Tecnico-Productos-e-Inventario\MSInventario\src\main\java\com\example\msinventario\service\ProductoDTO.java
