@@ -1,119 +1,186 @@
-# 🛒 Microservicios de Productos e Inventario
+## Sistema de Microservicios - Productos e Inventario
+Este proyecto implementa un sistema de gestión de productos e inventario utilizando Spring Boot + JPA + MySQL/H2, siguiendo un enfoque de microservicios.
 
-Este proyecto implementa un sistema de microservicios en **Spring Boot** para gestionar productos, inventario y compras.
-
----
-
-## 📌 Arquitectura General
-
-La solución se compone de dos microservicios principales:
-
-- **MSProductos**  
-  Maneja la información de los productos (crear, listar, obtener por ID).
-- **MSInventario**  
-  Administra la disponibilidad de inventario, gestiona compras y valida productos a través de MSProductos.
-
-📡 Comunicación entre servicios: **HTTP + JSON API**  
-🔑 Seguridad: **API Key** en cabecera de cada request  
-⚙️ Tolerancia a fallos: timeout + reintentos básicos en llamadas REST
-
----
-
-## 📂 Estructura del Proyecto
-/msproductos
-├── src/main/java/com/example/msproductos
-│ ├── controller
-│ ├── model
-│ ├── repository
-│ └── service
-├── resources/application.yml
-└── pom.xml
-
-/msinventario
-├── src/main/java/com/example/msinventario
-│ ├── client
-│ ├── controller
-│ ├── dto
-│ ├── entity
-│ ├── repository
-│ └── service
-├── resources/application.yml
-└── pom.xml
-
-## 🚀 Ejecución del Proyecto
-
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/tuusuario/microservicios-compras.git
-   cd microservicios-compras
-
- 2.Compilar y empaquetar cada servicio:
-    cd msproductos
-    mvn clean package -DskipTests
-    cd ../msinventario
-    mvn clean package -DskipTests
-
-3.Ejecutar los microservicios:
-
-    # MSProductos
-    java -jar target/msproductos-0.0.1-SNAPSHOT.jar
-    
-    # MSInventario
-    java -jar target/msinventario-0.0.1-SNAPSHOT.jar
-
-    (Opcional) Levantar con Docker:
-
-4. Levandar con docker opcional
-   docker build -t msproductos ./msproductos
-    docker run -p 8080:8080 msproductos
-    
-    docker build -t msinventario ./msinventario
-    docker run -p 8081:8081 msinventario
-
-5. Seguridad entre Microservicios
-   Se implementa API Key en los headers HTTP para validar las llamadas entre servicios.
-
-    Ejemplo de header:  x-api-key: mi-clave-secreta
-    Las claves se configuran en application.yml.
-
-6. Documentación API SProductos (http://localhost:8080/productos)
-   POST /productos → Crear un nuevo producto
-   Body ejemplo:
-   {
-      "nombre": "Laptop",
-      "precio": 3500.0
-    }
-    GET /productos/{id} → Obtener un producto por ID
-    GET /productos → Listar todos los productos
-
-
-   7. Documentación API MSInventario (http://localhost:8081)
-    
-    GET /inventario/{productoId}
-    Consulta la cantidad disponible de un producto.
-
-    PUT /inventario/{productoId}
-    Actualiza el stock de un producto.
-    Body ejemplo:
-    {
-      "cantidad": 15
-    }
-        
-    POST /compras
-    Realiza una compra, validando disponibilidad.
-    Body ejemplo:
-    {
-      "productoId": 1,
-      "cantidad": 2
-    }
+## 1. Microservicios
+  a. MSProductos
+   -Gestión de productos.
+   -Endpoints para crear, consultar y listar productos.
+   -Base de datos propia (productos_db).
+  a. MSInventario
+   -Gestión de inventario y compras.
+   -Consulta y actualización del stock de productos.
+   -Comunicación con MSProductos vía HTTP + API Key.
+   -Base de datos propia (inventario_db).
    
-    Response ejemplo:
+## 2. Arquitectura
+```mermaid
+flowchart LR
+A[Cliente / Frontend] -->|JSON API| B[MSProductos]
+A -->|JSON API| C[MSInventario]
+C -->|HTTP + API Key| B
+B -->|DB Productos| D[(MySQL / H2)]
+C -->|DB Inventario| E[(MySQL / H2)]
+```
+-Comunicación entre microservicios por HTTP/JSON.
+-Autenticación básica con API Key.
+-Manejo de timeout y reintentos en el cliente REST.
+
+## 3. Tecnologías
+    - Java 17
+    - Spring Boot 3.3.4
+    - Maven 3.9.x
+    - H2 Database (solo desarrollo)
+    - Spring Data JPA
+    - Spring Web
+    - Lombok
+    - Swagger / OpenAPI
+    - JUnit 5
+
+## 4. Documentación API
+Swagger habilitado en ambos servicios:
+MSProductos → http://localhost:8080/swagger-ui.html
+MSInventario → http://localhost:8081/swagger-ui.html
+
+## 5. Endpoints principales
+a. MSProductos
+    -Crear Producto
+            POST /productos
+
+            Headers: X-API-KEY (opcional)
+
+            Body:
+
+            {
+            "nombre": "Producto 1",
+            "precio": 10000,
+            "descripcion": "Descripción del producto"
+            }
+
+
+            Respuesta:
+
+            {
+            "data": {
+                "type": "producto",
+                "id": "1",
+                "attributes": {
+                "nombre": "Producto 1",
+                "precio": 10000,
+                "descripcion": "Descripción del producto"
+                }
+            }
+            }
+
+    -Obtener Producto por ID
+
+            GET /productos/{id}
+
+            Respuesta:
+
+            {
+            "data": {
+                "type": "producto",
+                "id": "1",
+                "attributes": {
+                "nombre": "Producto 1",
+                "precio": 10000,
+                "descripcion": "Descripción del producto"
+                }
+            }
+            }
+
+    -Listar Productos
+
+                GET /productos
+
+b. MSInventario
+    -Consultar inventario de un producto
+
+            GET /inventario/{productoId}
+
+            Respuesta:
+
+            {
+            "productoId": 1,
+            "cantidad": 50
+            }
+
+            Si el producto no existe:
+
+            {
+            "error": "Producto no encontrado en inventario"
+            }
+
+    -Actualizar inventario
+
+        PUT /inventario/{productoId}
+
+        Body:
+
+        {
+        "cantidad": 100
+        }
+
+        Respuesta:
+
+        {
+        "productoId": 1,
+        "cantidad": 100
+        }
+
+    -Registrar compra
+
+        POST /inventario/compra/{productoId}
+
+        Body:
+
+        {
+        "cantidad": 5
+        }
+
+
+    Validaciones:
+
+    Verifica que el producto exista en MSProductos.
+
+    Valida que el stock sea suficiente.
+
+    Descarta la cantidad comprada del inventario.
+
+    Respuesta exitosa:
+
     {
-      "productoId": 1,
-      "cantidadComprada": 2,
-      "mensaje": "Compra realizada con éxito"
+    "productoId": 1,
+    "cantidad": 45
     }
 
-7. Swagger/OpenAPI se habilita en ambos servicios:
-    MSProductos → http://localhost:8080/swagger-ui.html
-    MSInventario → http://localhost:8081/swagger-ui.html
+## 6. Seguridad (API Key)
+La comunicación entre MSInventario → MSProductos utiliza autenticación con API Key.
+Agregar en el application.yml de ms-inventario:
+msproductos:
+  url: http://localhost:8080
+  apikey: my-secret-key
+
+## 7.Testing
+Se incluyen pruebas unitarias y de integración:
+a. MSProductos
+    Creación de productos.
+    Consulta de productos.
+
+b. MSInventario
+    Gestión de inventario.
+    Proceso de compra (incluye comunicación con MSProductos).
+    Manejo de errores:
+    Producto no encontrado.
+    Inventario insuficiente.
+
+## 8 Requisitos
+    - JDK 17
+    - Maven 3.x
+    - PowerShell, Terminal o CMD en Windows
+    - IDE recomendado: Visual Studio Code o IntelliJ IDEA
+
+
+Autor: Jonnattan Arley González Ruiz
+Versión: 1.0.0
+
